@@ -1,0 +1,56 @@
+# Environment variables
+.env
+*.env
+
+# Python virtual environment
+venv/
+.venv/
+env/
+.env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Log files and output data
+*.log
+*.txt
+*.csv
+logs/
+output/
+test_network_logs_*.txt
+network_logs_*.txt
+linkedin_requests.csv
+test_data/
+data/
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+._*
+
+# Browser and driver logs
+chromedriver.log
+geckodriver.log
+*.log.html
+debug.log
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*~
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
