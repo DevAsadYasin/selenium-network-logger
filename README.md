@@ -1,143 +1,113 @@
-# 🌐 Selenium Network Request Capture
+# 🌐 Selenium Network Logger
 
 <div align="center">
 
 ![Selenium](https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=selenium&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Chrome](https://img.shields.io/badge/Chrome-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)
-![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
 
 </div>
 
 ## 📋 Description
 
-A Python-Selenium based tool demonstrating advanced network request capturing and monitoring capabilities. Uses Chrome DevTools Protocol (CDP) to intercept and log network requests in web applications.
+An open-source Python library demonstrating advanced network traffic monitoring, Chrome DevTools Protocol (CDP) interception, HAR 1.2 exporting, and Pandas-powered analytics for Selenium WebDriver automation.
 
 ### Key Features
-- 🔍 Real-time network request monitoring
-- 📝 Comprehensive request logging
-- 🎯 Request header extraction
-- 💾 CSV and TXT output formats
-- 🚦 Traffic analysis capabilities
+- 🔍 **Real-time CDP Network Monitoring**: Intercept requests and responses directly via Chrome DevTools Protocol.
+- 📊 **HAR 1.2 Format Exporter**: Standardized network session exports compatible with BrowserMob, Charles, and Chrome DevTools.
+- 📝 **CSV Summary Exporter**: Compact tabular exports of HTTP traffic.
+- 📈 **Pandas Analytics Engine**: Convert raw network streams into DataFrames for fast status distribution & timing audits.
+- 🚦 **CI/CD Quality Gates**: Easily fail automated builds on HTTP errors (>=400) or latency regressions.
 
-## 🎯 Primary Focus
+---
 
-1. **Network Request Capture:**
-   - Real-time request interception
-   - Header extraction and parsing
-   - URL pattern matching
-   - Request method identification
+## 📁 Project Architecture
 
-2. **Selenium Automation:**
-   - Chrome DevTools Protocol integration
-   - Performance log monitoring
-   - Network traffic analysis
-   - Request filtering capabilities
-
-3. **Data Collection:**
-   - Structured logging
-   - CSV export functionality
-   - Request header analysis
-   - URL pattern monitoring
-
-## 🔧 Technical Implementation
-
-### Network Monitoring
-```python
-driver.execute_cdp_cmd('Network.enable', {})
-driver.execute_cdp_cmd('Page.enable', {})
-```
-
-### Request Capture
-```python
-logs = driver.get_log('performance')
-for entry in logs:
-    data = json.loads(entry['message'])['message']
-    if 'Network.requestWillBeSent' == data['method']:
-        # Process request...
-```
-
-## 📊 Example Implementation
-
-The repository includes a practical implementation using Microsoft Outlook as an example:
-- Demonstrates network request capture in a real-world application
-- Shows how to extract specific request patterns (LinkedIn integration)
-- Provides logging and data extraction examples
-
-### Test Implementation
-- Separate test script (`network_test.py`)
-- Basic URL request capture
-- Header logging demonstration
-- Pattern matching example
-
-## 🔧 Requirements
-
-### System Requirements
-- **OS:** Ubuntu 20.04+
-- **Python:** 3.8+
-- **Chrome:** 134.0+
-- **ChromeDriver:** Compatible version
-
-### Python Dependencies
 ```text
-selenium==4.11.2
-python-dotenv==1.0.0
-selenium-wire==5.1.0
-webdriver-manager==4.0.0
+selenium-network-logger/
+├── network_logger.py     # Main Entry Point & Orchestrator
+├── chrome_monitor.py     # Chrome CDP & WebSocket Interface
+├── har_exporter.py       # HAR 1.2 Format Generator & CSV Exporter
+├── network_analyzer.py   # Pandas Analytics Engine
+├── timing.py             # Performance Timing Helpers
+├── requirements.txt      # Project Dependencies
+└── examples/
+    ├── basic_usage.py    # Connected Workflow Example
+    └── ci_pipeline.py    # CI/CD Quality Gate Example
 ```
 
-## ⚙️ Setup & Usage
+### Module Responsibilities
 
-1. **Environment Setup:**
+- **`chrome_monitor.py`**: Manages `NetworkMonitor`, `WebSocketNetworkListener`, and `BrowserMonitorFactory`.
+- **`har_exporter.py`**: Converts raw event JSON streams into standardized HAR 1.2 logs via `HARExporter` & exports CSV via `CSVExporter`.
+- **`network_analyzer.py`**: Aggregates HAR data into Pandas DataFrames using `NetworkAnalyzer`.
+- **`network_logger.py`**: High-level `NetworkLogger` class coordinating Selenium WebDriver, CDP monitoring, and HAR/CSV exports.
+
+---
+
+## ⚙️ Setup & Installation
+
+1. **Clone Repository**:
 ```bash
-python -m venv .venv
-source .venv/bin/activate
+git clone https://github.com/DevAsadYasin/selenium-network-logger.git
+cd selenium-network-logger
+```
+
+2. **Install Dependencies**:
+```bash
 pip install -r requirements.txt
 ```
 
-2. **Configuration:**
+---
+
+## 🚀 Usage Examples
+
+### 1. Basic Connected Workflow
+Run the unified example script:
 ```bash
-cp .env.example .env
-# Configure environment variables
+python examples/basic_usage.py
 ```
 
-3. **Test Network Capture:**
-```bash
-python network_test.py
+### 2. Quick Code Example
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from network_logger import NetworkLogger
+
+# 1. Enable Performance Logging in Chrome
+options = Options()
+options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
+driver = webdriver.Chrome(options=options)
+
+try:
+    # 2. Attach NetworkLogger
+    logger = NetworkLogger(driver)
+    logger.start()
+
+    # 3. Perform Automation
+    driver.get("https://example.com")
+    logger.capture_logs()
+
+    # 4. Export Reports
+    logger.export_har("network.har")
+    logger.export_csv("network.csv")
+
+    # 5. Pandas Analytics
+    df = logger.get_dataframe()
+    print(df.head())
+
+finally:
+    driver.quit()
 ```
 
-4. **Run Example Implementation:**
+### 3. CI/CD Quality Gate
+Run the automated CI build script:
 ```bash
-python main.py
+python examples/ci_pipeline.py
 ```
 
-## 📊 Output Files
-
-### Network Logs (TXT)
-- Timestamp
-- Request URL
-- Method
-- Headers
-- Request body (if applicable)
-
-### Filtered Requests (CSV)
-- Timestamp
-- Target URL
-- Complete headers
-- Pattern matches
-
-## 🤝 Contributing
-
-Areas for improvement:
-- Additional request capture methods
-- Enhanced pattern matching
-- Better error handling
-- More export formats
-- Extended CDP integration
-
-## ⚠️ Disclaimer
-
-This tool is for educational purposes, demonstrating Selenium's network monitoring capabilities. Example implementation with Outlook is for demonstration only.
+---
 
 ## 📜 License
 

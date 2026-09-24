@@ -26,7 +26,8 @@ TEST_PRICING_URL = os.getenv('TEST_PRICING_URL', 'https://anything.com/anything'
 
 def get_log_filepath():
     """Get filepath for network logs"""
-    base_dir = "/home/dev/outlook-cookie-automation"
+    base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
+    os.makedirs(base_dir, exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     filename = f"test_network_logs_{timestamp}.txt"
     return os.path.join(base_dir, filename)
@@ -64,7 +65,7 @@ def setup_network_monitoring():
         "goog:loggingPrefs", {"performance": "ALL", "browser": "ALL"}
     )
     
-    service = Service('/usr/lib/chromium-browser/chromedriver')
+    service = Service()
     driver = webdriver.Chrome(service=service, options=chrome_options)
     
     driver.set_page_load_timeout(30)
