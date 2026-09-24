@@ -6,6 +6,7 @@
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Chrome](https://img.shields.io/badge/Chrome-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
 </div>
 
@@ -19,6 +20,7 @@ An open-source Python library demonstrating advanced network traffic monitoring,
 - 📝 **CSV Summary Exporter**: Compact tabular exports of HTTP traffic.
 - 📈 **Pandas Analytics Engine**: Convert raw network streams into DataFrames for fast status distribution & timing audits.
 - 🚦 **CI/CD Quality Gates**: Easily fail automated builds on HTTP errors (>=400) or latency regressions.
+- 🐳 **Docker Containerization**: Production-ready `Dockerfile` and `docker-compose.yml` pre-configured with Chromium & ChromeDriver.
 
 ---
 
@@ -26,23 +28,28 @@ An open-source Python library demonstrating advanced network traffic monitoring,
 
 ```text
 selenium-network-logger/
-├── network_logger.py     # Main Entry Point & Orchestrator
-├── chrome_monitor.py     # Chrome CDP & WebSocket Interface
-├── har_exporter.py       # HAR 1.2 Format Generator & CSV Exporter
-├── network_analyzer.py   # Pandas Analytics Engine
-├── timing.py             # Performance Timing Helpers
+├── main.py                  # Core Runner Orchestrator
+├── network_logger.py        # Central Engine (NetworkLogger)
+├── chrome_monitor.py        # Chrome CDP & WebSocket Interface
+├── har_exporter.py          # HAR 1.2 Format Generator & CSV Exporter
+├── network_analyzer.py      # Pandas Analytics Engine
+├── timing.py                # Performance Timing Helpers
+├── Dockerfile               # Production Container Image
+├── docker-compose.yml       # Docker Compose Configuration
 ├── requirements.txt      # Project Dependencies
 └── examples/
-    ├── basic_usage.py    # Connected Workflow Example
-    └── ci_pipeline.py    # CI/CD Quality Gate Example
+    ├── basic_usage.py       # Connected Workflow Example
+    ├── ci_pipeline.py       # CI/CD Quality Gate Example
+    └── outlook_monitor.py   # Outlook Case Study Example
 ```
 
 ### Module Responsibilities
 
+- **`network_logger.py`**: High-level `NetworkLogger` class coordinating Selenium WebDriver, CDP monitoring, and HAR/CSV exports.
 - **`chrome_monitor.py`**: Manages `NetworkMonitor`, `WebSocketNetworkListener`, and `BrowserMonitorFactory`.
 - **`har_exporter.py`**: Converts raw event JSON streams into standardized HAR 1.2 logs via `HARExporter` & exports CSV via `CSVExporter`.
 - **`network_analyzer.py`**: Aggregates HAR data into Pandas DataFrames using `NetworkAnalyzer`.
-- **`network_logger.py`**: High-level `NetworkLogger` class coordinating Selenium WebDriver, CDP monitoring, and HAR/CSV exports.
+- **`main.py`**: Top-level application runner importing reusable workflows.
 
 ---
 
@@ -63,13 +70,19 @@ pip install -r requirements.txt
 
 ## 🚀 Usage Examples
 
-### 1. Basic Connected Workflow
-Run the unified example script:
+### 1. Main Core Runner
+Run all connected workflows:
+```bash
+python main.py
+```
+
+### 2. Basic Connected Workflow
+Run the basic usage example script:
 ```bash
 python examples/basic_usage.py
 ```
 
-### 2. Quick Code Example
+### 3. Quick Code Example
 ```python
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -101,10 +114,26 @@ finally:
     driver.quit()
 ```
 
-### 3. CI/CD Quality Gate
+### 4. CI/CD Quality Gate
 Run the automated CI build script:
 ```bash
 python examples/ci_pipeline.py
+```
+
+### 5. Case Study: Outlook & LinkedIn Header Extraction
+Run the Microsoft Outlook background API header extraction case study:
+```bash
+python examples/outlook_monitor.py
+```
+
+---
+
+## 🐳 Docker Deployment
+
+Run the solution in a isolated container environment without installing local Chrome drivers:
+
+```bash
+docker compose up --build
 ```
 
 ---
