@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  selenium-network-logger:
+    build: .
+    container_name: selenium_network_logger
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python examples/basic_usage.py

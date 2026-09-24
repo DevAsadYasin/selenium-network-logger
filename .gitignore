@@ -16,7 +16,9 @@ __pycache__/
 # Log files and output data
 *.log
 *.txt
+!requirements.txt
 *.csv
+*.har
 logs/
 output/
 test_network_logs_*.txt
